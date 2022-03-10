@@ -11,14 +11,14 @@ using namespace std;
 
 //with division:
 int* calcArray(int arr[], int size) {
-    int sum = 1;
+    int product = 1;
     static int res[100]; //MUST be static in order for the array to survive outside the stack.
     for (int i=0; i<size;i++) {
-        sum = sum * arr[i];
+        product = product * arr[i];
     }
 
     for (int i=0; i<size; i++) {
-        res[i] = sum / arr[i];
+        res[i] = product / arr[i];
         cout << res[i] << endl;
     }
     return res;
@@ -26,13 +26,34 @@ int* calcArray(int arr[], int size) {
 
 //without division:
 //could do double for loop. go through array and multiply, skip the index we're on.
-//
+//multiply left to right until elemnt. then second pass through multiply right to left.
+
+int* calcArrayNoDiv(int arr[], int size) {
+    static int res[100];
+    int product = 1;
+
+    for (int i = 0; i<size; i++) {
+        res[i] = product;
+        product = product * arr[i];
+        cout << res[i] << endl;
+    }
+
+    product = 1;
+    for(int i = size; i>=0; i--) {
+        res[i] = res[i] * product;
+        product = product * arr[i];
+        cout << res[i] << endl;
+    }
+
+    return res;
+}
+
 
 int main () {
     const int size = 5;
     int arr[size] = {1,2,3,4,5};
     
-    int *res = calcArray(arr, size);
+    int *res = calcArrayNoDiv(arr, size);
 
     cout << "New array values are: " << endl;
 
